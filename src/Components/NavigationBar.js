@@ -53,48 +53,65 @@ const pupTheme = createMuiTheme({
 
 export default function NavigationBar(props) {
   const classes = useStyles()
-
-  const [state, setState] = React.useState({
-    open: false
-  })
-
-  const toggleDrawer = (open) => event => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-      return
-    }
-
-    setState({ ...state, open: open })
-  }
+  const selected = props.selected
 
 	return (
 		<ThemeProvider theme={pupTheme}>
 			<AppBar>
-        <Drawer open={state.open} onClose={toggleDrawer(false)}>
+        <Drawer
+          open={props.menuOpen}
+          onClose={event => props.toggleDrawer(false)}
+        >
           <div className={classes.list}>
             <List>
-              <ListItem button key='overview' onClick={props.menuOnClick}>
+              <ListItem
+                selected={selected === 0}
+                button key='overview'
+                onClick={event => props.menuOnClick(0)}
+              >
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary='Overview' />
               </ListItem>
 
-              <ListItem button key='schedule' onClick={props.menuOnClick}>
+              <ListItem
+                selected={selected === 1} 
+                button
+                key='schedule'
+                onClick={event => props.menuOnClick(1)}
+              >
                 <ListItemIcon><ScheduleIcon /></ListItemIcon>
                 <ListItemText primary='Schedule' />
               </ListItem>
 
-              <ListItem button key='map' onClick={props.menuOnClick}>
+              <ListItem
+                selected={selected === 2}
+                button
+                key='map'
+                onClick={event => props.menuOnClick(2)}
+              >
                 <ListItemIcon><MapIcon /></ListItemIcon>
                 <ListItemText primary='Map' />
               </ListItem>
 
               <Divider />
-
-              <ListItem button key='settings' onClick={props.menuOnClick}>
+            </List>
+            <List>
+              <ListItem
+                selected={selected === 3}
+                button
+                key='settings'
+                onClick={event => props.menuOnClick(3)}
+              >
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
                 <ListItemText primary='Settings' />
               </ListItem>
 
-              <ListItem button key='about' onClick={props.menuOnClick}>
+              <ListItem
+                selected={selected === 4}
+                button
+                key='about'
+                onClick={event => props.menuOnClick(4)}
+              >
                 <ListItemIcon><InfoIcon /></ListItemIcon>
                 <ListItemText primary='About' />
               </ListItem>
@@ -102,17 +119,27 @@ export default function NavigationBar(props) {
           </div>
         </Drawer>
         <ToolBar>
-					<IconButton onClick={toggleDrawer(true)} className={classes.menuBtn} color='inherit' edge='start' aria-label='menu'>
+					<IconButton
+            onClick={event => props.toggleDrawer(true)}
+            className={classes.menuBtn}
+            color='inherit'
+            edge='start'
+            aria-label='menu'
+          >
 						<MenuIcon />
 					</IconButton>
 
 					<Typography variant='h6'>
-						Overview
+            {props.title}
 					</Typography>
         </ToolBar>
 			</AppBar>
 
-      <Fab className={classes.fab} color='primary' aria-label='add'>
+      <Fab
+        className={classes.fab}
+        color='primary'
+        aria-label='add'
+      >
         <AddIcon />
       </Fab>
 		</ThemeProvider>
