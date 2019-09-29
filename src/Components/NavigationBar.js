@@ -5,7 +5,7 @@ import { createMuiTheme, makeStyles } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Drawer from '@material-ui/core/Drawer'
-import ToolBar from '@material-ui/core/ToolBar'
+import ToolBar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import List from '@material-ui/core/List'
@@ -72,29 +72,29 @@ export default function NavigationBar(props) {
         <Drawer open={state.open} onClose={toggleDrawer(false)}>
           <div className={classes.list}>
             <List>
-              <ListItem button key='overview'>
+              <ListItem button key='overview' onClick={props.menuOnClick}>
                 <ListItemIcon><HomeIcon /></ListItemIcon>
                 <ListItemText primary='Overview' />
               </ListItem>
 
-              <ListItem button key='schedule'>
+              <ListItem button key='schedule' onClick={props.menuOnClick}>
                 <ListItemIcon><ScheduleIcon /></ListItemIcon>
                 <ListItemText primary='Schedule' />
               </ListItem>
 
-              <ListItem button key='map'>
+              <ListItem button key='map' onClick={props.menuOnClick}>
                 <ListItemIcon><MapIcon /></ListItemIcon>
                 <ListItemText primary='Map' />
               </ListItem>
 
               <Divider />
 
-              <ListItem button key='settings'>
+              <ListItem button key='settings' onClick={props.menuOnClick}>
                 <ListItemIcon><SettingsIcon /></ListItemIcon>
                 <ListItemText primary='Settings' />
               </ListItem>
 
-              <ListItem button key='about'>
+              <ListItem button key='about' onClick={props.menuOnClick}>
                 <ListItemIcon><InfoIcon /></ListItemIcon>
                 <ListItemText primary='About' />
               </ListItem>

@@ -13,17 +13,15 @@ class App extends React.Component {
 		}
 	}
 
-	toggleDrawer = (open) => {
-		this.setState({
-			drawerOpen: open
-		})
+	menuOnClickHandler(event) {
+		console.log('test')
 	}
 
 	render() {
 	  return (
 	  	<div className="main-wrapper">
 	  		<CssBaseline />
-	  		<NavigationBar />
+	  		<NavigationBar menuOnClick={this.menuOnClickHandler()} />
 	  		<View currentView={this.state.view} />
 	  	</div>
 	  )
