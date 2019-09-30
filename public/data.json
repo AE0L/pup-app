@@ -1,0 +1,44 @@
+{
+	"data_today": "09-28-19",
+	"subjects": [
+		{
+			"name": "Object Oriented Programming",
+			"prof": "Mrs. Fabrigas",
+			"schedule": [
+				{
+					"room" : "E-417",
+					"day"  : "Tuesday",
+					"start": "7:30 AM",
+					"end"  : "10:30 AM"
+				},
+
+				{
+					"room" : "S-510",
+					"day"  : "Friday",
+					"start": "7:30 AM",
+					"end"  : "9:30 AM",
+				}
+			]
+		},
+
+		{
+			"name": "Data Structures",
+			"prof": "Mr. Michael",
+			"schedule": [
+				{
+					"room" : "E-415",
+					"day"  : "Tuesday",
+					"start": "11:30 AM",
+					"end"  : "1:00 PM",
+				},
+
+				{
+					"room" : "S-508",
+					"day"  : "Friday",
+					"start": "10:30 AM",
+					"end"  : "1:00 PM"
+				}
+			]
+		}
+	]
+}
