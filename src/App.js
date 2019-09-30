@@ -1,7 +1,21 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import NavigationBar from './Components/NavigationBar.js'
+import { createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider } from '@material-ui/styles'
+
+import NavigationBar from './Components/Navigation/NavigationBar.js'
 import View from './Components/View.js'
+
+const mainTheme = createMuiTheme({
+	palette: {
+		primary: {
+			main: '#830404'
+		},
+		secondary: {
+			main: '#ffee44'
+		}
+	}
+})
 
 class App extends React.Component {
 	constructor(props) {
@@ -42,12 +56,18 @@ class App extends React.Component {
 		})
 	}
 
+	menuHandler = view => {
+		this.setState({
+			view: view,
+		})
+	}
+
 	render() {
 	  return (
-	  	<div className="main-wrapper">
+	  	<ThemeProvider theme={mainTheme}>
 	  		<CssBaseline />
-	  		
 	  		<NavigationBar
+	  			theme={mainTheme}
 	  			menuOpen={this.state.menuOpen}
 	  			title={this.state.view}
 	  			selected={this.state.selectedMenu}
@@ -55,8 +75,8 @@ class App extends React.Component {
 	  			toggleDrawer={this.toggleDrawer}
   			/>
 
-	  		<View currentView={this.state.view} />
-	  	</div>
+	  		<View menuHandler={this.menuHandler} currentView={this.state.view} />
+	  	</ThemeProvider>
 	  )
 	}
 }

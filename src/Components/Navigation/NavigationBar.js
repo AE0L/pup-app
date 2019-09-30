@@ -1,7 +1,5 @@
 import React from 'react'
-
-// Material UI
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Drawer from '@material-ui/core/Drawer'
@@ -13,10 +11,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
-import Fab from '@material-ui/core/Fab'
 
-// Icons
-import AddIcon from '@material-ui/icons/Add'
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home'
 import ScheduleIcon from '@material-ui/icons/Schedule'
@@ -40,23 +35,12 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const pupTheme = createMuiTheme({
-	palette: {
-		primary: {
-			main: '#830404'
-		},
-		secondary: {
-			main: '#ffee44'
-		}
-	}
-})
-
 export default function NavigationBar(props) {
   const classes = useStyles()
   const selected = props.selected
 
 	return (
-		<ThemeProvider theme={pupTheme}>
+		<ThemeProvider theme={props.theme}>
 			<AppBar>
         <Drawer
           open={props.menuOpen}
@@ -134,14 +118,6 @@ export default function NavigationBar(props) {
 					</Typography>
         </ToolBar>
 			</AppBar>
-
-      <Fab
-        className={classes.fab}
-        color='primary'
-        aria-label='add'
-      >
-        <AddIcon />
-      </Fab>
 		</ThemeProvider>
 	)
 }
