@@ -133,16 +133,16 @@ function Form(props) {
 		<form className={classes.form} noValidate autoComplete='off'>
 			<Typography variant='h4'>Subject Details</Typography>
 			<TextField 
-				id='subjName'
+				id='name'
 				label='Subject Name'
-				value={props.values.subjName}
-				onChange={props.handleChange('subjName')}
+				value={props.values.name}
+				onChange={props.handleChange('name')}
 			/>
 			<TextField 
-				id='subjProf'
+				id='prof'
 				label='Subject Professor'
-				value={props.values.subjProf}
-				onChange={props.handleChange('subjProf')}
+				value={props.values.prof}
+				onChange={props.handleChange('prof')}
 			/>
 			<Typography variant='h4'>Subject Schedule/s</Typography>
 			<div className={classes.schedCont}>
@@ -153,11 +153,11 @@ function Form(props) {
 			</div>
 			<div className={classes.btnCont}>
 				<div>
-					<Button className={classes.btn} size='large' variant='outlined'>
+					<Button onClick={event => props.onCancel('Overview')} className={classes.btn} size='large' variant='outlined'>
 						Cancel
 					</Button>
 
-					<Button className={classes.btn} size='large' variant='contained' color='primary'>
+					<Button onClick={props.readyData} className={classes.btn} size='large' variant='contained' color='primary'>
 						Add
 					</Button>
 				</div>
@@ -171,9 +171,8 @@ export default class SubjectCreate extends React.Component {
 		super(props)
 
 		this.state = {
-			subjName: '',
-			subjProf: '',
-			schedNum: 1,
+			name: '',
+			prof: '',
 			schedule: [
 				{ room: '', day: '', start: null, end: null }
 			]
@@ -229,6 +228,26 @@ export default class SubjectCreate extends React.Component {
 		})
 	}
 
+	readyData = () => {
+		let subject = JSON.parse(JSON.stringify(this.state))
+
+		subject.schedule = subject.schedule.map(schedules => {
+			let schedule = JSON.parse(JSON.stringify(schedules))
+			let timeStart = new Date(schedule.start)
+			let timeEnd = new Date(schedule.end)
+
+			timeStart = `${timeStart.getHours() > 12 ? timeStart.getHours() - 12 : timeStart.getHours()}:${timeStart.getMinutes()} ${timeStart.getHours() > 12 ? 'PM' : 'AM'}`
+			timeEnd = `${timeEnd.getHours() > 12 ? timeEnd.getHours() - 12 : timeEnd.getHours()}:${timeEnd.getMinutes()} ${timeEnd.getHours() > 12 ? 'PM' : 'AM'}`
+
+			schedule.start = timeStart
+			schedule.end = timeEnd
+
+			return schedule
+		})
+
+		this.props.updateData(subject)
+	}
+
 	render() {
 		return (
 			<Form
@@ -237,6 +256,8 @@ export default class SubjectCreate extends React.Component {
 				cardChange={this.cardChange}
 				addOnClick={this.addCard}
 				onDelete={this.deleteCard}
+				onCancel={this.props.onCancel}
+				readyData={this.readyData}
 			/>
 		)
 	}

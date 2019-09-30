@@ -1,4 +1,4 @@
-import React from 'react'
+	import React from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { ThemeProvider, useTheme } from '@material-ui/styles'
@@ -9,13 +9,13 @@ import AddIcon from '@material-ui/icons/Add'
 
 const useStyles = makeStyles(theme => ({
 	fab: {
-		position: 'absolute',
-		bottom: theme.spacing(4),
-		right: theme.spacing(4)
+		position: 'fixed',
+		bottom: theme.spacing(5),
+		right: theme.spacing(5)
 	},
 
 	menu: {
-		transform: `translate(-${theme.spacing(5)}px, -${theme.spacing(5)}px)`
+		transform: `translate(-${theme.spacing(6)}px, -${theme.spacing(4)}px)`
 	}
 }))
 

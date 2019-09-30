@@ -22,6 +22,7 @@ class App extends React.Component {
 		super(props)
 
 		this.state = {
+			data: props.data,
 			selectedMenu: 0,
 			menuOpen: false,
 			view: 'Overview'
@@ -56,9 +57,19 @@ class App extends React.Component {
 		})
 	}
 
-	menuHandler = view => {
+	changeView = view => {
 		this.setState({
 			view: view,
+		})
+	}
+
+	updateData = subject => {
+		let newData = JSON.parse(JSON.stringify(this.state.data))
+		newData.subjects.push(subject)
+
+		this.setState({
+			data: this.props.updateCache(newData),
+			view: 'Overview'
 		})
 	}
 
@@ -74,8 +85,7 @@ class App extends React.Component {
 	  			menuOnClick={this.menuOnClickHandler}
 	  			toggleDrawer={this.toggleDrawer}
   			/>
-
-	  		<View menuHandler={this.menuHandler} currentView={this.state.view} />
+	  		<View data={this.state.data} updateData={this.updateData} changeView={this.changeView} currentView={this.state.view} />
 	  	</ThemeProvider>
 	  )
 	}

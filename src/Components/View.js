@@ -9,14 +9,15 @@ import Settings from './Views/Settings.js'
 import About from './Views/About.js'
 
 export default function View(props) {
+	window.scrollTo(0, 0)
 	let view = props.currentView
 
 	if (view === 'Overview')
-		return (<Overview menuHandler={props.menuHandler} />)
+		return (<Overview data={props.data} changeView={props.changeView} />)
 	else if (view === 'Schedule')
 		return (<Schedule />)
 	else if (view === 'Subject Create')
-		return (<SubjectCreate />)
+		return (<SubjectCreate onCancel={props.changeView} updateData={props.updateData} />)
 	else if (view === 'Subject Edit')
 		return (<SubjectEdit />)
 	else if (view === 'Map')
