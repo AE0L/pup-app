@@ -11,4 +11,4 @@ window.onload = e => {
 	ReactDOM.render(<App updateCache={cacheControl.updateCache} data={data} /> , document.getElementById('root'))
 }
 
-serviceWorker.unregister();
+serviceWorker.register();

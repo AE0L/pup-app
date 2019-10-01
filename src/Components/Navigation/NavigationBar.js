@@ -11,8 +11,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
+import Button from '@material-ui/core/Button'
+import Slide from '@material-ui/core/Slide'
 
 import MenuIcon from '@material-ui/icons/Menu'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import HomeIcon from '@material-ui/icons/Home'
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import MapIcon from '@material-ui/icons/Map'
@@ -32,6 +35,10 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     bottom: theme.spacing(4),
     right: theme.spacing(4)
+  },
+
+  selected: {
+    color: theme.palette.primary.main
   }
 }))
 
@@ -41,7 +48,6 @@ export default function NavigationBar(props) {
 
 	return (
 		<ThemeProvider theme={props.theme}>
-			<AppBar>
         <Drawer
           open={props.menuOpen}
           onClose={event => props.toggleDrawer(false)}
@@ -49,31 +55,38 @@ export default function NavigationBar(props) {
           <div className={classes.list}>
             <List>
               <ListItem
+                className={selected === 0 ? classes.selected : ''}
                 selected={selected === 0}
                 button key='overview'
-                onClick={event => props.menuOnClick(0)}
-              >
-                <ListItemIcon><HomeIcon /></ListItemIcon>
-                <ListItemText primary='Overview' />
+                onClick={event => props.menuOnClick(0)} >
+                <ListItemIcon>
+                  <HomeIcon color={selected === 0 ? 'primary' : 'action'} />
+                </ListItemIcon>
+                <ListItemText
+                  primary='Overview' />
               </ListItem>
 
               <ListItem
+                className={selected === 1 ? classes.selected : ''}
                 selected={selected === 1} 
                 button
                 key='schedule'
-                onClick={event => props.menuOnClick(1)}
-              >
-                <ListItemIcon><ScheduleIcon /></ListItemIcon>
+                onClick={event => props.menuOnClick(1)} >
+                <ListItemIcon>
+                  <ScheduleIcon color={selected === 1 ? 'primary' : 'action'} />
+                </ListItemIcon>
                 <ListItemText primary='Schedule' />
               </ListItem>
 
               <ListItem
+                className={selected === 2 ? classes.selected : ''}
                 selected={selected === 2}
                 button
                 key='map'
-                onClick={event => props.menuOnClick(2)}
-              >
-                <ListItemIcon><MapIcon /></ListItemIcon>
+                onClick={event => props.menuOnClick(2)} >
+                <ListItemIcon>
+                  <MapIcon color={selected === 2 ? 'primary' : 'action'} />
+                </ListItemIcon>
                 <ListItemText primary='Map' />
               </ListItem>
 
@@ -81,41 +94,68 @@ export default function NavigationBar(props) {
             </List>
             <List>
               <ListItem
+                className={selected === 3 ? classes.selected : ''}
                 selected={selected === 3}
                 button
                 key='settings'
-                onClick={event => props.menuOnClick(3)}
-              >
-                <ListItemIcon><SettingsIcon /></ListItemIcon>
+                onClick={event => props.menuOnClick(3)} >
+                <ListItemIcon>
+                  <SettingsIcon color={selected === 3 ? 'primary' : 'action'} />
+                </ListItemIcon>
                 <ListItemText primary='Settings' />
               </ListItem>
 
               <ListItem
+                className={selected === 4 ? classes.selected : ''}
                 selected={selected === 4}
                 button
                 key='about'
-                onClick={event => props.menuOnClick(4)}
-              >
-                <ListItemIcon><InfoIcon /></ListItemIcon>
+                onClick={event => props.menuOnClick(4)} >
+                <ListItemIcon>
+                  <InfoIcon color={selected === 4 ? 'primary' : 'action'} />
+                </ListItemIcon>
                 <ListItemText primary='About' />
               </ListItem>
             </List>
           </div>
         </Drawer>
+      <AppBar>
         <ToolBar>
-					<IconButton
-            onClick={event => props.toggleDrawer(true)}
-            className={classes.menuBtn}
-            color='inherit'
-            edge='start'
-            aria-label='menu'
-          >
-						<MenuIcon />
-					</IconButton>
+          {props.navType === 'menu' && 
+  					<IconButton
+              onClick={event => props.toggleDrawer(true)}
+              className={classes.menuBtn}
+              color='inherit'
+              edge='start'
+              aria-label='menu'
+            >
+  						<MenuIcon />
+  					</IconButton>
+          }
 
-					<Typography variant='h6'>
+          {props.navType === 'back' &&
+            <IconButton
+              onClick={event => props.returnToOverview()}
+              className={classes.menuBtn}
+              color='inherit'
+              edge='start'
+              aria-label='back'
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          }
+
+					<Typography style={{flexGrow: 1}} variant='h6'>
             {props.title}
 					</Typography>
+
+          {props.showInstall && 
+            <Slide direction='left' in={true}>
+              <Button color='inherit' onClick={props.installHandler}>
+                  Install
+              </Button>
+            </Slide>
+          }
         </ToolBar>
 			</AppBar>
 		</ThemeProvider>

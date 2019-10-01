@@ -11,12 +11,14 @@ import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import Grow from '@material-ui/core/Grow'
+import Slide from '@material-ui/core/Slide'
 
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 import CloseIcon from '@material-ui/icons/Close'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	form: {
 		width: '100%',
 		display: 'grid',
@@ -29,6 +31,10 @@ const useStyles = makeStyles({
 	schedCont: {
 		display: 'grid',
 		gridRowGap: '1em',
+	},
+
+	schedCard: {
+		borderLeft: `.5em solid ${theme.palette.secondary.dark}`
 	},
 
 	card: {
@@ -44,13 +50,13 @@ const useStyles = makeStyles({
 
 	btnCont: {
 		display: 'grid',
-		justifyContent: 'end'
+		gridTemplateColumns: '1fr 1fr'
 	},
 
 	btn: {
 		margin: '1em'
-	}
-})
+	},
+}))
 
 function Schedules(props) {
 	const classes = useStyles()
@@ -59,7 +65,8 @@ function Schedules(props) {
 		<React.Fragment>
 			{props.schedules.map((sched, i) => {
 				return (
-					<Card key={`sched-${i}`}>
+					<Grow mountOnEnter in={true} key={`sched-${i}`}>
+					<Card className={classes.schedCard}>
 						{i !== 0 
 							? <CardHeader
 									title='Schedule'
@@ -101,7 +108,7 @@ function Schedules(props) {
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
 								<TimePicker
 									autoOk
-									todayLabel='now'
+									clearable
 									label='Start'
 									value={sched.start}
 									minutesStep={5}
@@ -112,6 +119,7 @@ function Schedules(props) {
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
 								<TimePicker
 									autoOk
+									clearable
 									label='End'
 									value={sched.end}
 									minutesStep={5}
@@ -120,6 +128,7 @@ function Schedules(props) {
 							</MuiPickersUtilsProvider>
 						</CardContent>
 					</Card>
+					</Grow>
 				)
 			})}
 		</React.Fragment>
@@ -130,9 +139,11 @@ function Form(props) {
 	const classes = useStyles()
 
 	return (
+		<Slide direction='up' in={true}>
 		<form className={classes.form} noValidate autoComplete='off'>
-			<Typography variant='h4'>Subject Details</Typography>
+			<Typography variant='h5'>Subject Details</Typography>
 			<TextField 
+				autoFocus
 				id='name'
 				label='Subject Name'
 				value={props.values.name}
@@ -144,7 +155,7 @@ function Form(props) {
 				value={props.values.prof}
 				onChange={props.handleChange('prof')}
 			/>
-			<Typography variant='h4'>Subject Schedule/s</Typography>
+			<Typography variant='h5' style={{marginTop: '1em'}}>Subject Schedule/s</Typography>
 			<div className={classes.schedCont}>
 				<Schedules schedules={props.values.schedule} onChange={props.cardChange} onDelete={props.onDelete}/>
 				<Fab className={classes.addIcon} color='primary' onClick={props.addOnClick}>
@@ -152,7 +163,6 @@ function Form(props) {
 				</Fab>
 			</div>
 			<div className={classes.btnCont}>
-				<div>
 					<Button onClick={event => props.onCancel('Overview')} className={classes.btn} size='large' variant='outlined'>
 						Cancel
 					</Button>
@@ -161,8 +171,8 @@ function Form(props) {
 						Add
 					</Button>
 				</div>
-			</div>
 		</form>
+		</Slide>
 	)
 }
 
@@ -174,7 +184,7 @@ export default class SubjectCreate extends React.Component {
 			name: '',
 			prof: '',
 			schedule: [
-				{ room: '', day: '', start: null, end: null }
+				{ grow: false, room: '', day: '', start: null, end: null }
 			]
 		}
 	}
@@ -209,6 +219,7 @@ export default class SubjectCreate extends React.Component {
 	addCard = event => {
 		this.setState(state => {
 			const schedule = state.schedule.push({
+				grow: true,
 				room: '',
 				day: '',
 				start: null,

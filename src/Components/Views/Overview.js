@@ -4,15 +4,18 @@ import { makeStyles } from '@material-ui/core/styles'
 import MenuItem from '@material-ui/core/MenuItem'
 import { ThemeProvider, useTheme } from '@material-ui/styles'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import Grow from '@material-ui/core/Grow'
 
 import FabIcon from '../Navigation/FabIcon.js'
+import ScheduleIcon from '@material-ui/icons/Schedule'
 
 const useStyle = makeStyles(theme => ({
 	wrapper: {
-		margin: '0 1em 3em 1em',
-		marginTop: '15vh'
+		margin: '0 1em 1em',
+		marginTop: '15vh',
+		marginBottom: '25vh'
 	},
 
 	cardCont: {
@@ -21,15 +24,14 @@ const useStyle = makeStyles(theme => ({
 	},
 
 	card: {
-		borderLeft: `.5em solid ${theme.palette.secondary.dark}`
+		borderLeft: `.5em solid ${theme.palette.secondary.dark}`,
 	},
 
-	todayCont: {
+	dateHeader: {
 		display: 'grid',
 		gridTemplateColumns: '1fr 1fr',
 		alignItems: 'center',
-		marginTop: '4em',
-		marginBottom: '1em'
+		marginTop: '2.5em',
 	},
 
 	todayText: {
@@ -40,14 +42,22 @@ const useStyle = makeStyles(theme => ({
 		justifySelf: 'end'
 	},
 
-	noSched: {
-		background: 'rgb(200, 200, 200)'
+	noSchedCard: {
+		background: 'rgb(200, 200, 200)',
+		padding: '1em 0'
+	},
+
+	subjTime: {
+		display: 'grid',
+		gridTemplateColumns: 'auto 1fr',
+		gridColumnGap: '.5em',
+		margin: '.5em 0'
 	}
 }))
 
 function FabMenuItems(props) {
 	return (
-		<MenuItem key="add-schedule" onClick={event => props.changeView('Subject Create')}>
+		<MenuItem key="add-schedule" onClick={event => props.changeView('Add Subject')}>
 			Add new schedule
 		</MenuItem>
 	)
@@ -59,13 +69,22 @@ function Cards(props) {
 	const content = props.data.map(subj =>
 		subj.schedule.map(sched =>
 			<Card className={classes.card} key={`${subj.name}-${sched.roow}`}>
-				<CardHeader
-					title={subj.name}
-					subheader={`${sched.start} - ${sched.end}`}
-				/>
-				<CardContent>
-					<Typography variant='h5'>{sched.room}</Typography>
-				</CardContent>
+				<CardActionArea>
+					<CardContent style={{paddingBottom: '1em'}}>
+						<Typography
+							className={classes.subjName}
+							noWrap={true}
+							variant='body1'
+							gutterBottom
+						>
+							{subj.name}
+						</Typography>
+						<Typography className={classes.subjTime} variant='body2' color='textSecondary'>
+							<ScheduleIcon style={{ fontSize: '1.25em' }} />{`${sched.start} - ${sched.end}`}
+						</Typography>
+						<Typography className={classes.subjRoom} variant='body2'>{sched.room}</Typography>
+					</CardContent>
+				</CardActionArea>
 			</Card>
 		)
 	)
@@ -83,44 +102,42 @@ function ContentContainer(props) {
 
 	return (
 		<ThemeProvider theme={theme}>
+		<Grow in={true}>
 			<div className={classes.wrapper}>
-				<div className={classes.todayCont}>
-					<Typography className={classes.todayText} variant='h4'>Today</Typography>
-					<Typography className={classes.todayDate} variant='h6'>{props.todayDate}</Typography>
+				<div className={classes.dateHeader}>
+					<Typography className={classes.todayText} variant='h5' gutterBottom>Today</Typography>
+					<Typography className={classes.todayDate} color='textSecondary' variant='subtitle2'>{props.todayDate}</Typography>
 				</div>
 				<div className={classes.cardCont}>
 					{props.todayData.length !== 0 && <Cards data={props.todayData} />}
 					{props.todayData.length === 0 &&
-						<Card>
-							<CardContent className={classes.noSched}>
-								<Typography variant='h5' align='center'>No schedule today</Typography>
-							</CardContent>
+						<Card className={classes.noSchedCard}>
+							<Typography variant='body1' align='center'>No schedule for today</Typography>
 						</Card>
 					}
 					{props.todayData.length !== 0 &&
-						<Typography variant='h6' align='center'>End of schedule</Typography>
+						<Typography variant='body2' color='textSecondary' align='center'>End of schedule</Typography>
 					}
 				</div>
 
-				<div className={classes.todayCont}>
-					<Typography className={classes.todayText} variant='h4'>Tomorrow</Typography>
-					<Typography className={classes.todayDate} variant='h6'>{props.tomDate}</Typography>
+				<div className={classes.dateHeader}>
+					<Typography className={classes.todayText} variant='h5' gutterBottom>Tomorrow</Typography>
+					<Typography className={classes.todayDate} color='textSecondary' variant='subtitle2'>{props.tomDate}</Typography>
 				</div>
 				<div className={classes.cardCont}>
 					{props.tomorrowData.length !== 0 && <Cards data={props.tomorrowData} />}
 					{props.tomorrowData.length === 0 &&
-						<Card>
-							<CardContent className={classes.noSched}>
-								<Typography variant='h5' align='center'>No schedule tomorrow</Typography>
-							</CardContent>
+						<Card className={classes.noSchedCard}>
+							<Typography variant='body1' align='center'>No schedule for tomorrow</Typography>
 						</Card>
 					}
 					{props.tomorrowData.length !== 0 &&
-						<Typography variant='h6' align='center'>End of schedule</Typography>
+						<Typography variant='body2' color='textSecondary' align='center'>End of schedule</Typography>
 					}
 				</div>
-				<FabIcon> <FabMenuItems changeView={props.changeView} /> </FabIcon>
 			</div>
+		</Grow>
+		<FabIcon> <FabMenuItems changeView={props.changeView} /> </FabIcon>
 		</ThemeProvider>
 	)
 }
@@ -184,6 +201,9 @@ export default class Overview extends React.Component {
 	render() {
 		return (
 			<ContentContainer
+				openSnack={this.props.openSnack}
+				closeSnack={this.props.closeSnack}
+				onUndo={this.props.onUndo}
 				tomDate={this.state.tomorrow}
 				todayDate={this.state.today}
 				todayData={this.state.todayData}

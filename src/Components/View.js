@@ -9,21 +9,29 @@ import Settings from './Views/Settings.js'
 import About from './Views/About.js'
 
 export default function View(props) {
-	window.scrollTo(0, 0)
 	let view = props.currentView
+	window.scrollTo(0, 0)
 
-	if (view === 'Overview')
+	if (view === 'Overview') {
+		window.document.title = 'Overview | PUP App'
 		return (<Overview data={props.data} changeView={props.changeView} />)
-	else if (view === 'Schedule')
+	} else if (view === 'Schedule') {
+		window.document.title = 'Schedule | PUP App'
 		return (<Schedule />)
-	else if (view === 'Subject Create')
+	} else if (view === 'Add Subject') {
+		window.document.title = 'Add Subject | PUP App'
 		return (<SubjectCreate onCancel={props.changeView} updateData={props.updateData} />)
-	else if (view === 'Subject Edit')
+	} else if (view === 'Subject Edit') {
+		window.document.title = 'Edit Subject | PUP App'
 		return (<SubjectEdit />)
-	else if (view === 'Map')
+	} else if (view === 'Map') {
+		window.document.title = 'Map | PUP App'
 		return (<MapView />)
-	else if (view === 'Settings')
+	} else if (view === 'Settings') {
+		window.document.title = 'Settings | PUP App'
 		return (<Settings />)
-	else if (view === 'About')
+	} else if (view === 'About') {
+		window.document.title = 'About | PUP App'
 		return (<About />)
+	}
 }

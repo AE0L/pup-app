@@ -22,10 +22,12 @@ class App extends React.Component {
 		super(props)
 
 		this.state = {
+			navType: 'menu',
 			data: props.data,
 			selectedMenu: 0,
 			menuOpen: false,
-			view: 'Overview'
+			view: 'Overview',
+			showInstall: false,
 		}
 	}
 
@@ -60,6 +62,14 @@ class App extends React.Component {
 	changeView = view => {
 		this.setState({
 			view: view,
+			navType: view === 'Add Subject' ? 'back' : 'menu'
+		})
+	}
+
+	returnToOverview = () => {
+		this.setState({
+			view: 'Overview',
+			navType: 'menu'
 		})
 	}
 
@@ -68,16 +78,55 @@ class App extends React.Component {
 		newData.subjects.push(subject)
 
 		this.setState({
-			data: this.props.updateCache(newData),
-			view: 'Overview'
+			data: this.props.updateCache(newData)
+		})
+
+		this.returnToOverview()
+	}
+
+	showInstall = () => {
+		this.setState({
+			showInstall: true,
 		})
 	}
 
+	installHandler = () => {
+		this.state.deferredPrompt.prompt()
+
+		this.state.deferredPrompt.userChoice.then(
+			choice => {
+				if (choice.outcome === 'accepted') {
+					this.setState({
+						showInstall: false,
+					})
+				}
+
+				this.setState({
+					deferredPrompt: null
+				})
+			}
+		)
+	} 
+
 	render() {
+		window.addEventListener('beforeinstallprompt', e => {
+			e.preventDefault()
+
+			this.setState({
+				deferredPrompt: e
+			})
+
+			this.showInstall()
+		})
+
 	  return (
 	  	<ThemeProvider theme={mainTheme}>
 	  		<CssBaseline />
 	  		<NavigationBar
+	  			installHandler={this.installHandler}
+	  			showInstall={this.state.showInstall}
+	  			navType={this.state.navType}
+	  			returnToOverview={this.returnToOverview}
 	  			theme={mainTheme}
 	  			menuOpen={this.state.menuOpen}
 	  			title={this.state.view}
