@@ -1,5 +1,6 @@
 import React from 'react'
 
+import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Card from '@material-ui/core/Card'
@@ -244,14 +245,11 @@ export default class SubjectCreate extends React.Component {
 
 		subject.schedule = subject.schedule.map(schedules => {
 			let schedule = JSON.parse(JSON.stringify(schedules))
-			let timeStart = new Date(schedule.start)
-			let timeEnd = new Date(schedule.end)
+			let timeStart = moment(new Date(schedule.start))
+			let timeEnd = moment(new Date(schedule.end))
 
-			timeStart = `${timeStart.getHours() > 12 ? timeStart.getHours() - 12 : timeStart.getHours()}:${timeStart.getMinutes()} ${timeStart.getHours() > 12 ? 'PM' : 'AM'}`
-			timeEnd = `${timeEnd.getHours() > 12 ? timeEnd.getHours() - 12 : timeEnd.getHours()}:${timeEnd.getMinutes()} ${timeEnd.getHours() > 12 ? 'PM' : 'AM'}`
-
-			schedule.start = timeStart
-			schedule.end = timeEnd
+			schedule.start = moment(new Date(schedule.start)).format('h:mm A')
+			schedule.end = moment(new Date(schedule.end)).format('h:mm A')
 
 			return schedule
 		})

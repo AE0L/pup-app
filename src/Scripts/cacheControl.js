@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 const CACHE_NAME = 'pup-app-data'
 
 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']
@@ -20,19 +22,14 @@ export function onLoad() {
 	let cache = localStorage.getItem(CACHE_NAME) || null
 
 	if (!cache) {
-		let date = new Date()
-		let tomDate = new Date()
-		tomDate.setDate(tomDate.getDate() + 1)
-		let today = `${months[date.getMonth()]}. ${date.getDate()}, ${date.getFullYear()}`
-		let tomorrow = `${months[tomDate.getMonth()]}. ${tomDate.getDate()}, ${tomDate.getFullYear()}`
-		let day = days[date.getDay()]
-		let dayTom = days[tomDate.getDay()]
+		let today = moment(new Date())
+		let tomorrow = moment(new Date()).add(1, 'd')
 
 		let data = {
-			day_today: day,
-			day_tomorrow: dayTom,
-			date_today: today,
-			date_tomorrow: tomorrow,
+			today: today.format('dddd'),
+			tomorrow: tomorrow.format('dddd'),
+			date_today: today.format(),
+			date_tomorrow: tomorrow.format(),
 			subjects: [],
 		}
 
@@ -40,12 +37,10 @@ export function onLoad() {
 
 		return JSON.parse(localStorage.getItem(CACHE_NAME))
 	} else {
-		let date = new Date()
+		let date = moment(new Date())
 		let newData = JSON.parse(localStorage.getItem(CACHE_NAME))
-		let today = `${months[date.getMonth()]}. ${date.getDate()}, ${date.getFullYear()}`
 
-		newData.day_today = days[date.getDay()]
-		newData.date_today = today
+		newData.date_today = date.format()
 
 		return updateCache(newData)
 	}

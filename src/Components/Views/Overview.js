@@ -8,6 +8,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import Grow from '@material-ui/core/Grow'
 
+import moment from 'moment'
+
 import FabIcon from '../Navigation/FabIcon.js'
 import ScheduleIcon from '@material-ui/icons/Schedule'
 
@@ -147,8 +149,8 @@ export default class Overview extends React.Component {
 		super(props)
 
 		this.state = {
-			today: props.data.date_today,
-			tomorrow: props.data.date_tomorrow,
+			today: moment(props.data.date_today).format('MMM. D, Y'),
+			tomorrow: moment(props.data.date_tomorrow).format('MMM. D Y'),
 			todayData: this.getTodaySched(props.data),
 			tomorrowData: this.getTomorrowSched(props.data)
 		}
@@ -159,7 +161,7 @@ export default class Overview extends React.Component {
 
 		let today = data.subjects.filter(subj => {
 			let todaySched = subj.schedule.filter(sched => {
-				return sched.day === data.day_today
+				return sched.day === data.today
 			})
 
 			return (todaySched.length !== 0)
@@ -167,13 +169,13 @@ export default class Overview extends React.Component {
 
 		today = today.map(subj => {
 			subj.schedule = subj.schedule.filter(sched => {
-				return sched.day === data.day_today
+				return sched.day === data.today
 			})
 
 			return subj
 		})
 
-		return today
+		return this.sortSched(today)
 	}
 
 	getTomorrowSched = data => {
@@ -181,7 +183,7 @@ export default class Overview extends React.Component {
 
 		let tom = data.subjects.filter(subj => {
 			let tomSched = subj.schedule.filter(sched => {
-				return sched.day === data.day_tomorrow
+				return sched.day === data.tomorrow
 			})
 
 			return (tomSched.length !== 0)
@@ -189,13 +191,34 @@ export default class Overview extends React.Component {
 
 		tom = tom.map(subj => {
 			subj.schedule = subj.schedule.filter(sched => {
-				return sched.day === data.day_tomorrow
+				return sched.day === data.tomorrow
 			})
 
 			return subj
 		})
-		
-		return tom
+
+		return this.sortSched(tom)
+	}
+
+	sortSched = (scheds) => {
+		let _new = []
+
+		while (scheds.length !== 0) {
+			let earliest = scheds[0]
+
+			scheds.forEach(sched => {
+				let start = moment(sched.schedule[0].start, 'h:mm A').unix()
+				let early = moment(earliest.schedule[0].start, 'h:mm A').unix()
+
+				if (start < early) earliest = sched
+			})
+
+			scheds = scheds.filter(sched => sched.name !== earliest.name)
+
+			_new.push(earliest)
+		}
+
+		return _new
 	}
 
 	render() {

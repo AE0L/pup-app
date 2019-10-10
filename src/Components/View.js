@@ -17,7 +17,7 @@ export default function View(props) {
 		return (<Overview data={props.data} changeView={props.changeView} />)
 	} else if (view === 'Schedule') {
 		window.document.title = 'Schedule | PUP App'
-		return (<Schedule />)
+		return (<Schedule data={props.data} changeView={props.changeView} />)
 	} else if (view === 'Add Subject') {
 		window.document.title = 'Add Subject | PUP App'
 		return (<SubjectCreate onCancel={props.changeView} updateData={props.updateData} />)
