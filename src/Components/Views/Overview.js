@@ -15,7 +15,7 @@ import ScheduleIcon from '@material-ui/icons/Schedule'
 
 const useStyle = makeStyles(theme => ({
 	wrapper: {
-		margin: '0 1em 1em',
+		margin: '0 1em',
 		marginTop: '15vh',
 		marginBottom: '25vh'
 	},

@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import HomeIcon from '@material-ui/icons/Home'
 import ScheduleIcon from '@material-ui/icons/Schedule'
+import FoodIcon from '@material-ui/icons/Restaurant'
 import MapIcon from '@material-ui/icons/Map'
 import SettingsIcon from '@material-ui/icons/Settings'
 import InfoIcon from '@material-ui/icons/Info'
@@ -80,12 +81,24 @@ export default function NavigationBar(props) {
 
               <ListItem
                 className={selected === 2 ? classes.selected : ''}
-                selected={selected === 2}
+                selected={selected === 2} 
                 button
-                key='map'
+                key='foods'
                 onClick={event => props.menuOnClick(2)} >
                 <ListItemIcon>
-                  <MapIcon color={selected === 2 ? 'primary' : 'action'} />
+                  <FoodIcon color={selected === 2 ? 'primary' : 'action'} />
+                </ListItemIcon>
+                <ListItemText primary='Foods' />
+              </ListItem>
+
+              <ListItem
+                className={selected === 3 ? classes.selected : ''}
+                selected={selected === 3}
+                button
+                key='map'
+                onClick={event => props.menuOnClick(3)} >
+                <ListItemIcon>
+                  <MapIcon color={selected === 3 ? 'primary' : 'action'} />
                 </ListItemIcon>
                 <ListItemText primary='Map' />
               </ListItem>
@@ -94,25 +107,25 @@ export default function NavigationBar(props) {
             </List>
             <List>
               <ListItem
-                className={selected === 3 ? classes.selected : ''}
-                selected={selected === 3}
+                className={selected === 4 ? classes.selected : ''}
+                selected={selected === 4}
                 button
                 key='settings'
-                onClick={event => props.menuOnClick(3)} >
+                onClick={event => props.menuOnClick(4)} >
                 <ListItemIcon>
-                  <SettingsIcon color={selected === 3 ? 'primary' : 'action'} />
+                  <SettingsIcon color={selected === 4 ? 'primary' : 'action'} />
                 </ListItemIcon>
                 <ListItemText primary='Settings' />
               </ListItem>
 
               <ListItem
-                className={selected === 4 ? classes.selected : ''}
-                selected={selected === 4}
+                className={selected === 5 ? classes.selected : ''}
+                selected={selected === 5}
                 button
                 key='about'
-                onClick={event => props.menuOnClick(4)} >
+                onClick={event => props.menuOnClick(5)} >
                 <ListItemIcon>
-                  <InfoIcon color={selected === 4 ? 'primary' : 'action'} />
+                  <InfoIcon color={selected === 5 ? 'primary' : 'action'} />
                 </ListItemIcon>
                 <ListItemText primary='About' />
               </ListItem>

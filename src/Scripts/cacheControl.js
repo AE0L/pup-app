@@ -1,24 +1,11 @@
 import moment from 'moment'
 
+import foodData from './FoodData'
+
 const CACHE_NAME = 'pup-app-data'
+const FOOD_CACHE_NAME = 'pup-app-food-data'
 
-const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']
-const months = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec'
-]
-
-export function onLoad() {
+export function getData() {
 	let cache = localStorage.getItem(CACHE_NAME) || null
 
 	if (!cache) {
@@ -44,6 +31,16 @@ export function onLoad() {
 
 		return updateCache(newData)
 	}
+}
+
+export function getFoodData() {
+	let cache = localStorage.getItem(FOOD_CACHE_NAME) || null
+
+	if (!cache) {
+		localStorage.setItem(FOOD_CACHE_NAME, JSON.stringify(foodData))
+	}
+
+	return JSON.parse(localStorage.getItem(FOOD_CACHE_NAME))
 }
 
 export function updateCache(data) {

@@ -245,8 +245,6 @@ export default class SubjectCreate extends React.Component {
 
 		subject.schedule = subject.schedule.map(schedules => {
 			let schedule = JSON.parse(JSON.stringify(schedules))
-			let timeStart = moment(new Date(schedule.start))
-			let timeEnd = moment(new Date(schedule.end))
 
 			schedule.start = moment(new Date(schedule.start)).format('h:mm A')
 			schedule.end = moment(new Date(schedule.end)).format('h:mm A')

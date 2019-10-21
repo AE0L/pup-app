@@ -23,6 +23,7 @@ class App extends React.Component {
 
 		this.state = {
 			navType: 'menu',
+			foodData: props.foodData,
 			data: props.data,
 			selectedMenu: 0,
 			menuOpen: false,
@@ -45,10 +46,12 @@ class App extends React.Component {
 		} else if (index === 1) {
 			view = 'Schedule'
 		} else if (index === 2) {
-			view = 'Map'
+			view = 'Foods'
 		} else if (index === 3) {
-			view = 'Settings'
+			view = 'Map'
 		} else if (index === 4) {
+			view = 'Settings'
+		} else if (index === 5) {
 			view = 'About'
 		}
 
@@ -134,7 +137,13 @@ class App extends React.Component {
 	  			menuOnClick={this.menuOnClickHandler}
 	  			toggleDrawer={this.toggleDrawer}
   			/>
-	  		<View data={this.state.data} updateData={this.updateData} changeView={this.changeView} currentView={this.state.view} />
+	  		<View
+	  			foodData={this.state.foodData}
+	  			data={this.state.data}
+	  			updateData={this.updateData}
+	  			changeView={this.changeView}
+	  			currentView={this.state.view}
+	  		/>
 	  	</ThemeProvider>
 	  )
 	}

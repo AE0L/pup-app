@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper'
 import moment from 'moment'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/styles'
-import { makeStyles } from '@material-ui/core/styles'
 import { Scheduler, WeekView, Appointments } from '@devexpress/dx-react-scheduler-material-ui'
 
 const styles = (theme) => ({
@@ -26,7 +25,10 @@ const styles = (theme) => ({
 	},
 
 	appointment: {
-		background: theme.palette.primary.main
+		background: theme.palette.primary.main,
+		'&:hover': {
+			background: theme.palette.secondary.dark,
+		},
 	},
 
 	timeTableCell: {
@@ -52,13 +54,6 @@ const styles = (theme) => ({
 })
 
 const formatTimeScale = date => moment(date).format('h a')
-
-const formatDayScale = (date, options) => {
-	const momentDate = moment(date)
-	const { weekday } = options
-
-	return momentDate.format(weekday ? 'dddd' : 'D')
-}
 
 const TimeTableCell = withStyles(styles, { name: 'TimeTableCell' }) (
 	({ classes, ...restProps }) => {
@@ -161,8 +156,8 @@ export default class Schedule extends React.Component {
 			scheds: []
 		}
 
-		this.props.data.subjects.map(subj => {
-			subj.schedule.map(sched => {
+		this.props.data.subjects.forEach(subj => {
+			subj.schedule.forEach(sched => {
 				let startDate  = moment(new Date())
 				let endDate   = moment(new Date())
 				let start 		= moment(sched.start, 'h:mm A')
